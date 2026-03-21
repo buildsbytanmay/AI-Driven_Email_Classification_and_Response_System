@@ -5,6 +5,9 @@ from app.config import settings
 
 from fastapi import Request
 
+# Temporary token storage (for development only)
+user_token = {}
+
 router = APIRouter()
 
 @router.get("/login")
@@ -38,5 +41,7 @@ def auth_callback(request: Request):
     response = requests.post(token_url, data=data)
     token_data = response.json()
 
-    # For now just return token (later we will store in DB)
-    return token_data
+    # ✅ Save token (temporary)
+    user_token["access_token"] = token_data.get("access_token")
+
+    return {"message": "Login successful"}
