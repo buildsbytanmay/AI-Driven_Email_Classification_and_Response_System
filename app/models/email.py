@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Float
 from datetime import datetime
 from app.database import Base
 
@@ -11,5 +12,6 @@ class Email(Base):
     subject = Column(String)
     body = Column(Text)
     category = Column(String, default="Uncategorized")
+    confidence = Column(Float, nullable=True)
     received_at = Column(DateTime)
     created_at = Column(DateTime, default=datetime.utcnow)
