@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual Environment
+venv/
+env/
+
+# Environment Variables (IMPORTANT)
+.env
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Database (if any local files later)
+*.sqlite3
+
+# Pytest / cache
+.pytest_cache/
+
+# Build files
+dist/
+build/
+*.egg-info/
