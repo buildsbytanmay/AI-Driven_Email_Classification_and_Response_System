@@ -100,11 +100,23 @@ def get_email(id: str):
 
     body = get_body(msg["payload"])
 
+    headers = msg["payload"]["headers"]
+
+    subject = ""
+    sender = ""
+
+    for h in headers:
+        if h["name"] == "Subject":
+            subject = h["value"]
+        if h["name"] == "From":
+            sender = h["value"]
+
     return {
         "id": id,
+        "subject": subject,
+        "sender": sender,
         "body": body
     }
-
 
 
 
