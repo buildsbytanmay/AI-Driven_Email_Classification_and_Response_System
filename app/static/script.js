@@ -39,6 +39,7 @@ async function openEmail(id) {
     const res = await fetch(`/emails/${id}`);
     const data = await res.json();
 
+    document.getElementById("sender").innerText = data.sender || "";
     document.getElementById("subject").innerText = data.subject || "";
     document.getElementById("body").innerText = data.body;
 }
@@ -69,6 +70,39 @@ async function customReply() {
     const data = await res.json();
 
     document.getElementById("replyBox").value = data.reply;
+}
+
+// Compose Mail
+function openGmailCompose() {
+    const reply = document.getElementById("replyBox").value;
+
+    if (!reply) {
+        alert("Generate a reply first!");
+        return;
+    }
+
+    // Extract email from sender string
+    const senderText = document.getElementById("sender").innerText;
+
+    // Example: "John Doe <john@gmail.com>"
+    const emailMatch = senderText.match(/<(.+?)>/);
+
+    let email = "";
+    if (emailMatch) {
+        email = emailMatch[1];
+    } else {
+        email = senderText; // fallback
+    }
+
+    const subject = document.getElementById("subject").innerText;
+
+    // Encode everything for URL
+    const encodedSubject = encodeURIComponent("Re: " + subject);
+    const encodedBody = encodeURIComponent(reply);
+
+    const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodedSubject}&body=${encodedBody}`;
+
+    window.open(url, "_blank");
 }
 
 // History
