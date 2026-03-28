@@ -44,4 +44,10 @@ def auth_callback(request: Request):
     # ✅ Save token (temporary)
     user_token["access_token"] = token_data.get("access_token")
 
-    return {"message": "Login successful"}
+    # return {"message": "Login successful"}
+    from fastapi.responses import RedirectResponse
+
+    response = RedirectResponse(url="/")
+    response.set_cookie(key="logged_in", value="true")
+
+    return response

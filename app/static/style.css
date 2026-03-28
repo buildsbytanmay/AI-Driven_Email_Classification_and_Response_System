@@ -1,0 +1,62 @@
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #f4f6f8;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 200px;
+    background: #1e293b;
+    color: white;
+    padding: 20px;
+}
+
+.sidebar button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 10px;
+    background: #334155;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Email List */
+.email-list {
+    width: 300px;
+    background: white;
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+}
+
+.email-item {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.email-item:hover {
+    background: #f1f5f9;
+}
+
+/* Viewer */
+.email-viewer {
+    flex: 1;
+    padding: 20px;
+}
+
+.actions {
+    margin: 10px 0;
+}
+
+textarea {
+    width: 100%;
+    height: 150px;
+}

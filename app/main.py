@@ -1,6 +1,10 @@
 from fastapi import FastAPI
 from app.database import Base, engine
 
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from fastapi import Request
+
 # import models so SQLAlchemy registers them
 from app.models import email, reply_history
 
@@ -26,6 +30,19 @@ app.include_router(history_routes.router)
 # Create tables in database
 Base.metadata.create_all(bind=engine)
 
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+templates = Jinja2Templates(directory="app/templates")
+
+# @app.get("/")
+# def root():
+#     return {"message": "AI Email Assistant Backend Running"}
+
 @app.get("/")
-def root():
-    return {"message": "AI Email Assistant Backend Running"}
+def home(request: Request):
+    return templates.TemplateResponse("inbox.html", {"request": request})
+
+
+@app.get("/history-page")
+def history_page(request: Request):
+    return templates.TemplateResponse("history.html", {"request": request})
