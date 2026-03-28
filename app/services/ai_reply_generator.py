@@ -46,3 +46,51 @@ Reply:
     data = response.json()
 
     return data["choices"][0]["message"]["content"]
+
+
+def generate_custom_reply(email_text: str, instruction: str, sender_name: str, user_name: str):
+    prompt = f"""
+You are a professional email assistant.
+
+Write a complete formal email reply.
+
+Rules:
+- Always start with: Dear {sender_name},
+- Add a blank line after greeting
+- Clearly respond to the email using the instruction
+- Keep tone polite and professional
+- End with:
+
+Best regards,  
+{user_name}
+
+- Do NOT use user's name in greeting
+- Do NOT leave signature incomplete
+- Do NOT use placeholders
+
+Email:
+{email_text}
+
+Instruction:
+{instruction}
+
+Reply:
+"""
+
+    response = requests.post(
+        API_URL,
+        headers={
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        },
+        json={
+            "model": "openrouter/free",
+            "messages": [
+                {"role": "user", "content": prompt}
+            ]
+        }
+    )
+
+    data = response.json()
+
+    return data["choices"][0]["message"]["content"]
