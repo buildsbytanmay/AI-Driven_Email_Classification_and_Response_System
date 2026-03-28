@@ -9,6 +9,9 @@ from app.routers import auth
 from app.routers import email_routes
 from app.routers import reply_routes
 
+from app.routers import email_routes, history_routes
+
+
 # FIRST create app
 app = FastAPI()
 
@@ -16,6 +19,9 @@ app = FastAPI()
 app.include_router(auth.router)
 app.include_router(email_routes.router)
 app.include_router(reply_routes.router)
+
+app.include_router(email_routes.router)
+app.include_router(history_routes.router)
 
 # Create tables in database
 Base.metadata.create_all(bind=engine)
