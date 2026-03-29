@@ -14,67 +14,63 @@ from app.services.gmail_service import get_body
 router = APIRouter()
 
 @router.get("/emails/unread")
-def get_unread_emails():
-    access_token = user_token.get("access_token")
+def get_unread_emails(category: str = None):
+    db = SessionLocal()
 
+    # 🔹 STEP 1 — Get access token
+    access_token = user_token.get("access_token")
     if not access_token:
         return {"error": "User not authenticated"}
 
-    gmail_service = GmailService(access_token)
-    emails = gmail_service.get_unread_emails()
+    # 🔹 STEP 2 — Fetch from Gmail
+    gmail = GmailService(access_token)
+    fetched_emails = gmail.get_unread_emails()
 
-    db = SessionLocal()
-
-    result = []
-
-    for e in emails:
-        # Check if email already exists
+    # 🔹 STEP 3 — Save new emails only
+    for e in fetched_emails:
         existing = db.query(Email).filter(
             Email.gmail_message_id == e["id"]
         ).first()
 
-        if existing:
-            # reuse classification
-            result.append({
-                "id": e["id"],
-                "sender": e["sender"],
-                "subject": e["subject"],
-                "snippet": e["snippet"],
-                "date": e["date"],
-                "category": existing.category,
-                "confidence": existing.confidence
-            })
-        else:
-            # classify email
+        if not existing:
+            # 👉 Classification
             text = f"{e['subject']} {e['snippet']}"
-            classification = classify_email(text)
+            result = classify_email(text)
 
-            # save in DB
             new_email = Email(
                 gmail_message_id=e["id"],
                 sender=e["sender"],
                 subject=e["subject"],
                 body=e["snippet"],
-                category=classification["category"],
-                confidence=classification["confidence"],
-                received_at=datetime.utcnow()
+                category=result["category"],
+                confidence=result["confidence"]
             )
 
             db.add(new_email)
-            db.commit()
 
-            result.append({
-                "id": e["id"],
-                "sender": e["sender"],
-                "subject": e["subject"],
-                "snippet": e["snippet"],
-                "date": e["date"],
-                "category": classification["category"],
-                "confidence": classification["confidence"]
-            })
+    db.commit()
+
+    # 🔹 STEP 4 — Apply filter
+    query = db.query(Email)
+
+    if category:
+        query = query.filter(Email.category == category)
+
+    emails = query.all()
 
     db.close()
-    return result
+
+    # 🔹 STEP 5 — Return
+    return [
+        {
+            "id": e.gmail_message_id,
+            "sender": e.sender,
+            "subject": e.subject,
+            "snippet": e.body,
+            "category": e.category
+        }
+        for e in emails
+    ]
 
 
 

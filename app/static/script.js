@@ -16,6 +16,15 @@ function checkLogin() {
 
 let currentEmailId = null;
 
+// Clean text
+function cleanText(text) {
+    if (!text) return "";
+
+    // Remove HTML tags
+    return text.replace(/<[^>]*>/g, "").trim();
+}
+
+
 // Load Inbox
 async function loadInbox() {
     showLoader();
@@ -31,10 +40,20 @@ async function loadInbox() {
         div.className = "email-item";
 
         div.innerHTML = `
-            <strong>${email.sender}</strong><br>
-            ${email.subject}<br>
-            <small>${email.snippet}</small>
-        `;
+    <strong>${email.sender}</strong>
+    <span style="
+        float:right;
+        font-size:11px;
+        background:#dbeafe;
+        color:#1d4ed8;
+        padding:3px 6px;
+        border-radius:6px;
+    ">
+        ${email.category || ""}
+    </span><br>
+    ${email.subject}<br>
+    <small>${cleanText(email.snippet)}</small>
+`;
 
         div.onclick = () => openEmail(email.id);
 
@@ -43,6 +62,46 @@ async function loadInbox() {
 
     hideLoader();
 }
+
+
+// Filter Emails
+async function filterEmails(category) {
+    showLoader();
+
+    const res = await fetch(`/emails/unread?category=${category}`);
+    const data = await res.json();
+
+    const list = document.getElementById("emailList");
+    list.innerHTML = `<h3>${category}</h3>`;
+
+    data.forEach(email => {
+        const div = document.createElement("div");
+        div.className = "email-item";
+
+        div.innerHTML = `
+    <strong>${email.sender}</strong>
+    <span style="
+        float:right;
+        font-size:11px;
+        background:#dbeafe;
+        color:#1d4ed8;
+        padding:3px 6px;
+        border-radius:6px;
+    ">
+        ${email.category || ""}
+    </span><br>
+    ${email.subject}<br>
+    <small>${cleanText(email.snippet)}</small>
+`;
+
+        div.onclick = () => openEmail(email.id);
+
+        list.appendChild(div);
+    });
+
+    hideLoader();
+}
+
 
 // Open Email
 async function openEmail(id) {
