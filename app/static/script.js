@@ -1,3 +1,11 @@
+function showLoader() {
+    document.getElementById("loader").classList.remove("hidden");
+}
+
+function hideLoader() {
+    document.getElementById("loader").classList.add("hidden");
+}
+
 function checkLogin() {
     const loggedIn = document.cookie.includes("logged_in=true");
 
@@ -10,6 +18,8 @@ let currentEmailId = null;
 
 // Load Inbox
 async function loadInbox() {
+    showLoader();
+
     const res = await fetch("/emails/unread");
     const data = await res.json();
 
@@ -30,10 +40,14 @@ async function loadInbox() {
 
         list.appendChild(div);
     });
+
+    hideLoader();
 }
 
 // Open Email
 async function openEmail(id) {
+    showLoader();
+
     currentEmailId = id;
 
     const res = await fetch(`/emails/${id}`);
@@ -42,10 +56,14 @@ async function openEmail(id) {
     document.getElementById("sender").innerText = data.sender || "";
     document.getElementById("subject").innerText = data.subject || "";
     document.getElementById("body").innerText = data.body;
+
+    hideLoader();
 }
 
 // Generate AI Reply
 async function generateReply() {
+    showLoader();
+
     const res = await fetch(`/emails/${currentEmailId}/generate-reply`, {
         method: "POST"
     });
@@ -53,10 +71,14 @@ async function generateReply() {
     const data = await res.json();
 
     document.getElementById("replyBox").value = data.reply;
+
+    hideLoader();
 }
 
 // Custom Reply
 async function customReply() {
+    showLoader();
+
     const instruction = document.getElementById("customInput").value;
 
     const res = await fetch(`/emails/${currentEmailId}/custom-reply`, {
@@ -70,6 +92,8 @@ async function customReply() {
     const data = await res.json();
 
     document.getElementById("replyBox").value = data.reply;
+
+    hideLoader();
 }
 
 // Compose Mail
