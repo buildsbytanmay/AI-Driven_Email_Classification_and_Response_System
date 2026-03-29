@@ -47,7 +47,7 @@ def auth_callback(request: Request):
     # return {"message": "Login successful"}
     from fastapi.responses import RedirectResponse
 
-    response = RedirectResponse(url="/")
+    response = RedirectResponse(url="/inbox")
     response.set_cookie(key="logged_in", value="true")
 
     return response

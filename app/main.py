@@ -39,7 +39,12 @@ templates = Jinja2Templates(directory="app/templates")
 #     return {"message": "AI Email Assistant Backend Running"}
 
 @app.get("/")
-def home(request: Request):
+def landing(request: Request):
+    return templates.TemplateResponse("landing.html", {"request": request})
+
+
+@app.get("/inbox")
+def inbox(request: Request):
     return templates.TemplateResponse("inbox.html", {"request": request})
 
 
