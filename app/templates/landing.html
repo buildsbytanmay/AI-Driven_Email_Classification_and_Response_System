@@ -6,14 +6,23 @@
 </head>
 <body class="landing-body">
 
+<!-- Background animation -->
+<canvas id="bgCanvas"></canvas>
+
 <div class="landing-container">
 
+    <!-- Hero Image -->
+    <img src="https://cdn-icons-png.flaticon.com/512/561/561127.png" class="hero-img">
+
+    <!-- Title -->
     <h1 class="title">AI Email Assistant</h1>
 
+    <!-- Typing text -->
     <p class="subtitle">
-        Smartly manage your emails with AI-powered classification and instant reply generation.
+        <span id="typing-text"></span>
     </p>
 
+    <!-- Button -->
     <button class="login-btn" onclick="goLogin()">Login with Gmail</button>
 
 </div>
@@ -22,6 +31,60 @@
 function goLogin() {
     window.location.href = "/login";
 }
+
+/* Typing Effect */
+const text = "Smartly manage emails with AI. Save time, reply faster, stay organized.";
+let i = 0;
+
+function typingEffect() {
+    if (i < text.length) {
+        document.getElementById("typing-text").innerHTML += text.charAt(i);
+        i++;
+        setTimeout(typingEffect, 40);
+    }
+}
+
+typingEffect();
+
+/* Background Animation */
+const canvas = document.getElementById("bgCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+
+for (let i = 0; i < 60; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 3,
+        dx: Math.random() - 0.5,
+        dy: Math.random() - 0.5
+    });
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(255,255,255,0.6)";
+        ctx.fill();
+
+        p.x += p.dx;
+        p.y += p.dy;
+
+        if (p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if (p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
 </script>
 
 </body>

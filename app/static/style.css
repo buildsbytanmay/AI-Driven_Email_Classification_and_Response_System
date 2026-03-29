@@ -212,3 +212,43 @@ textarea {
         transform: translateY(0);
     }
 }
+
+/* Background canvas */
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+}
+
+/* Container above animation */
+.landing-container {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+/* Hero Image */
+.hero-img {
+    width: 120px;
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Floating animation */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Typing cursor */
+#typing-text::after {
+    content: "|";
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0; }
+}
