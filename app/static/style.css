@@ -17,6 +17,10 @@ body {
     background: #0f172a;
     color: white;
     padding: 20px;
+
+    display: flex;              /* 🔥 ADD THIS */
+    flex-direction: column;     /* 🔥 ADD THIS */
+    justify-content: space-between;
 }
 
 .sidebar h2 {
