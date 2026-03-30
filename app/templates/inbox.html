@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>AI Email Assistant</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
+
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <h2>📧 AI Mail</h2>
-        <button onclick="loadInbox()">Inbox</button>
-        <button onclick="filterEmails('Important')">Important</button>
-        <button onclick="filterEmails('Work')">Work</button>
-        <button onclick="filterEmails('Personal')">Personal</button>
-        <button onclick="filterEmails('Spam')">Spam</button>
-        <button onclick="goHistory()">History</button>
-        <button onclick="logout()">Logout</button>
-    </div>
+        <!-- Sidebar -->
+        <div class="sidebar">
 
-    <!-- Email List -->
-    <div class="email-list" id="emailList">
-        <h3 style="padding:10px;">📥 Inbox</h3>
-    </div>
+            <div>
+                <h2>📧 AI Mail</h2>
 
-    <!-- Email Viewer -->
-    <div class="email-viewer">
-        <h3 id="subject">Select an Email</h3>
-        <p id="sender"></p>
-        <div id="body"></div>
+                <button onclick="loadInbox()">Inbox</button>
+                <button onclick="filterEmails('Important')">Important</button>
+                <button onclick="filterEmails('Work')">Work</button>
+                <button onclick="filterEmails('Personal')">Personal</button>
+                <button onclick="filterEmails('Spam')">Spam</button>
 
-        <div class="actions">
-            <button onclick="generateReply()">Generate AI Reply</button>
-            <input type="text" id="customInput" placeholder="Custom instruction">
-            <button onclick="customReply()">Custom Reply</button>
-            <button onclick="openGmailCompose()">Send Email</button>
+                <button onclick="goHistory()">History</button>
+            </div>
+
+            <!-- Logout at bottom -->
+            <button class="logout-btn" onclick="logout()">Logout</button>
+
         </div>
 
-        <textarea id="replyBox" placeholder="AI Reply will appear here..."></textarea>
+        <!-- Email List -->
+        <div class="email-list" id="emailList">
+            <h3 style="padding:10px;">📥 Inbox</h3>
+        </div>
+
+        <!-- Email Viewer -->
+        <div class="email-viewer">
+            <h3 id="subject">Select an Email</h3>
+            <p id="sender"></p>
+            <div id="body"></div>
+
+            <div class="actions">
+                <button onclick="generateReply()">Generate AI Reply</button>
+                <input type="text" id="customInput" placeholder="Custom instruction">
+                <button onclick="customReply()">Custom Reply</button>
+                <button onclick="openGmailCompose()">Send Email</button>
+            </div>
+
+            <textarea id="replyBox" placeholder="AI Reply will appear here..."></textarea>
+        </div>
+
     </div>
 
-</div>
+    <div id="loader" class="loader hidden"></div>
 
-<div id="loader" class="loader hidden"></div>
-
-<script src="/static/script.js"></script>
+    <script src="/static/script.js"></script>
 
 </body>
+
 </html>

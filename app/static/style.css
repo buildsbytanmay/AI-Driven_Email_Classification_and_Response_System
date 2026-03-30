@@ -39,6 +39,15 @@ body {
     background: #2563eb;
 }
 
+
+.logout-btn{
+    background: #dc2626;
+}
+
+.logout-btn:hover{
+    background: #b91c1c;;
+}
+
 /* Email List */
 .email-list {
     width: 320px;
