@@ -56,7 +56,7 @@ def get_unread_emails(category: str = None):
     if category:
         query = query.filter(Email.category == category)
 
-    emails = query.all()
+    emails = query.order_by(Email.created_at.desc()).all()
 
     db.close()
 
