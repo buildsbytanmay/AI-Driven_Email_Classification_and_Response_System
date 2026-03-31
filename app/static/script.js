@@ -311,12 +311,12 @@ function goHistory() {
 }
 
 function goInbox() {
-    window.location.href = "/";
+    window.location.href = "/inbox";
 }
 
 function logout() {
     document.cookie = "logged_in=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-    window.location.href = "/login";
+    window.location.href = "/";
 }
 
 // Auto load
