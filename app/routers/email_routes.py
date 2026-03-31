@@ -93,17 +93,18 @@ def get_sent_emails():
     ]
 
 
+
 @router.get("/emails/{id}")
 def get_email(id: str):
+    db = SessionLocal()   # ✅ FIX
+
     access_token = user_token.get("access_token")
 
     if not access_token:
+        db.close()
         return {"error": "Not authenticated"}
 
-    gmail = GmailService(access_token)
-
-    service = gmail.get_unread_emails  # just to access service setup
-
+    # 🔹 Gmail fetch
     creds = Credentials(token=access_token)
     service = build("gmail", "v1", credentials=creds)
 
@@ -129,18 +130,29 @@ def get_email(id: str):
     # 🔹 Get email from DB
     email = db.query(Email).filter(Email.gmail_message_id == id).first()
 
-    # 🔹 Get reply history (latest)
-    reply = db.query(ReplyHistory).filter(
-        ReplyHistory.email_id == email.id
-    ).order_by(ReplyHistory.created_at.desc()).first()
+    # 🔹 Default values (IMPORTANT)
+    is_handled = False
+    reply_text = ""
+
+    if email:
+        is_handled = email.is_handled
+    
+        reply = db.query(ReplyHistory).filter(
+            ReplyHistory.email_id == email.id
+        ).order_by(ReplyHistory.created_at.desc()).first()
+
+        if reply:
+            reply_text = reply.generated_reply
+
+    db.close()   # ✅ FIX
 
     return {
         "id": id,
         "subject": subject,
         "sender": sender,
         "body": body,
-        "is_handled": email.is_handled,
-        "reply": reply.generated_reply if reply else ""
+        "is_handled": is_handled,
+        "reply": reply_text
     }
 
 
