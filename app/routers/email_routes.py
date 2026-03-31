@@ -73,6 +73,25 @@ def get_unread_emails(category: str = None):
     ]
 
 
+@router.get("/emails/sent")
+def get_sent_emails():
+    db = SessionLocal()
+
+    emails = db.query(Email).filter(Email.is_handled == True).all()
+
+    db.close()
+
+    return [
+        {
+            "id": e.gmail_message_id,
+            "sender": e.sender,
+            "subject": e.subject,
+            "snippet": e.body,
+            "category": e.category
+        }
+        for e in emails
+    ]
+
 
 @router.get("/emails/{id}")
 def get_email(id: str):
@@ -202,25 +221,6 @@ def custom_reply(id: str, request: CustomRequest):
 
     return {"reply": reply}
 
-
-@router.get("/emails/sent")
-def get_sent_emails():
-    db = SessionLocal()
-
-    emails = db.query(Email).filter(Email.is_handled == True).all()
-
-    db.close()
-
-    return [
-        {
-            "id": e.gmail_message_id,
-            "sender": e.sender,
-            "subject": e.subject,
-            "snippet": e.body,
-            "category": e.category
-        }
-        for e in emails
-    ]
 
 
 @router.post("/emails/{id}/mark-handled")
