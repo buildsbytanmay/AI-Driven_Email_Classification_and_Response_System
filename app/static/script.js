@@ -203,6 +203,37 @@ function openGmailCompose() {
 
     // 🔥 REMOVE EMAIL FROM UI
     removeEmailFromUI(currentEmailId);
+
+    fetch(`/emails/${currentEmailId}/mark-handled`, {
+        method: "POST"
+    });
+}
+
+// Load sent emails
+async function loadSentEmails() {
+    showLoader();
+
+    const res = await fetch("/emails/sent");
+    const data = await res.json();
+
+    const list = document.getElementById("emailList");
+    list.innerHTML = "<h3>Sent Emails</h3>";
+
+    data.forEach(email => {
+        const div = document.createElement("div");
+        div.className = "email-item";
+        div.setAttribute("data-id", email.id);
+
+        div.innerHTML = `
+            <strong>${email.sender}</strong><br>
+            ${email.subject}<br>
+            <small>${cleanText(email.snippet)}</small>
+        `;
+
+        list.appendChild(div);
+    });
+
+    hideLoader();
 }
 
 // History
