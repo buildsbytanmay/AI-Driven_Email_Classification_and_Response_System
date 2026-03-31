@@ -38,6 +38,7 @@ async function loadInbox() {
     data.forEach(email => {
         const div = document.createElement("div");
         div.className = "email-item";
+        div.setAttribute("data-id", email.id);
 
         div.innerHTML = `
     <strong>${email.sender}</strong>
@@ -77,6 +78,7 @@ async function filterEmails(category) {
     data.forEach(email => {
         const div = document.createElement("div");
         div.className = "email-item";
+        div.setAttribute("data-id", email.id);
 
         div.innerHTML = `
     <strong>${email.sender}</strong>
@@ -155,6 +157,18 @@ async function customReply() {
     hideLoader();
 }
 
+
+function removeEmailFromUI(id) {
+    const items = document.querySelectorAll(".email-item");
+
+    items.forEach(item => {
+        if (item.getAttribute("data-id") === id) {
+            item.remove();
+        }
+    });
+}
+
+
 // Compose Mail
 function openGmailCompose() {
     const reply = document.getElementById("replyBox").value;
@@ -186,6 +200,9 @@ function openGmailCompose() {
     const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodedSubject}&body=${encodedBody}`;
 
     window.open(url, "_blank");
+
+    // 🔥 REMOVE EMAIL FROM UI
+    removeEmailFromUI(currentEmailId);
 }
 
 // History
@@ -199,6 +216,7 @@ async function loadHistory() {
     data.forEach(h => {
         const div = document.createElement("div");
         div.className = "email-item";
+        div.setAttribute("data-id", email.id);
 
         div.innerHTML = `
             <strong>Email ID:</strong> ${h.email_id}<br>
