@@ -118,6 +118,28 @@ async function openEmail(id) {
     document.getElementById("subject").innerText = data.subject || "";
     document.getElementById("body").innerText = data.body;
 
+    const replyBox = document.getElementById("replyBox");
+
+    // 🔥 If email is from SENT
+    if (data.is_handled) {
+        replyBox.value = data.reply || "";
+
+        // ❌ Disable buttons
+        document.getElementById("generateBtn").disabled = true;
+        document.getElementById("customBtn").disabled = true;
+        document.getElementById("sendBtn").disabled = true;
+
+    } else {
+        // Inbox email
+
+        replyBox.value = "";
+
+        // ✅ Enable buttons
+        document.getElementById("generateBtn").disabled = false;
+        document.getElementById("customBtn").disabled = false;
+        document.getElementById("sendBtn").disabled = false;
+    }
+
     hideLoader();
 }
 

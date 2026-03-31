@@ -126,13 +126,22 @@ def get_email(id: str):
         if h["name"] == "From":
             sender = h["value"]
 
+    # 🔹 Get email from DB
+    email = db.query(Email).filter(Email.gmail_message_id == id).first()
+
+    # 🔹 Get reply history (latest)
+    reply = db.query(ReplyHistory).filter(
+        ReplyHistory.email_id == email.id
+    ).order_by(ReplyHistory.created_at.desc()).first()
+
     return {
         "id": id,
         "subject": subject,
         "sender": sender,
-        "body": body
+        "body": body,
+        "is_handled": email.is_handled,
+        "reply": reply.generated_reply if reply else ""
     }
-
 
 
 def extract_sender_name(sender: str):
