@@ -219,18 +219,43 @@ async function loadSentEmails() {
     const list = document.getElementById("emailList");
     list.innerHTML = "<h3>Sent Emails</h3>";
 
+    // data.forEach(email => {
+    //     const div = document.createElement("div");
+    //     div.className = "email-item";
+    //     div.setAttribute("data-id", email.id);
+
+    //     div.innerHTML = `
+    //         <strong>${email.sender}</strong><br>
+    //         ${email.subject}<br>
+    //         <small>${cleanText(email.snippet)}</small>
+    //     `;
+
+    //     list.appendChild(div);
     data.forEach(email => {
-        const div = document.createElement("div");
-        div.className = "email-item";
-        div.setAttribute("data-id", email.id);
+    const div = document.createElement("div");
+    div.className = "email-item";
+    div.setAttribute("data-id", email.id);
 
-        div.innerHTML = `
-            <strong>${email.sender}</strong><br>
-            ${email.subject}<br>
-            <small>${cleanText(email.snippet)}</small>
-        `;
+    div.innerHTML = `
+        <strong>${email.sender}</strong>
+        <span style="
+            float:right;
+            font-size:11px;
+            background:#dbeafe;
+            color:#1d4ed8;
+            padding:3px 6px;
+            border-radius:6px;
+        ">
+            ${email.category || ""}
+        </span><br>
+        ${email.subject}<br>
+        <small>${cleanText(email.snippet)}</small>
+    `;
 
-        list.appendChild(div);
+    // 🔥 THIS LINE IS MISSING
+    div.onclick = () => openEmail(email.id);
+
+    list.appendChild(div);
     });
 
     hideLoader();
