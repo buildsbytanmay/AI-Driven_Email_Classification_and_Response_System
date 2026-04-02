@@ -52,7 +52,7 @@ The application uses FastAPI as the backend, PostgreSQL as the database, and int
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 ai-email-assistant/
@@ -88,4 +88,64 @@ ai-email-assistant/
 ├── .env
 ├── requirements.txt
 └── README.md
+```
+
+## ⚙️ Installation
+
+### 1️⃣ Clone Repository
+
+```bash
+git clone <your-repo-url>
+cd ai-email-assistant
+```
+
+---
+
+### 2️⃣ Create Virtual Environment
+
+```bash
+python -m venv venv
+venv\Scripts\activate   # Windows
+```
+
+---
+
+### 3️⃣ Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Environment Variables
+
+Create a `.env` file in root directory:
+
+```
+DATABASE_URL=postgresql://postgres:your_password@localhost:5432/email_ai_db
+SECRET_KEY=your_secret_key
+APP_ENV=development
+
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_REDIRECT_URI=http://localhost:8000/auth/callback
+```
+
+---
+
+## Database Setup
+
+1. Create PostgreSQL database:
+
+```sql
+CREATE DATABASE email_ai_db;
+```
+
+2. Tables will be auto-created via SQLAlchemy (if configured).
+
+If needed:
+
+```sql
+ALTER TABLE emails ADD COLUMN is_handled BOOLEAN DEFAULT FALSE;
 ```
