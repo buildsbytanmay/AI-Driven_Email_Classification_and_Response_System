@@ -221,3 +221,47 @@ Response:
   "reply": "Dear John,\n\nThank you for your email..."
 }
 ```
+
+## 🔮 Future Improvements
+
+* Background job processing (Celery)
+* Real email sending via Gmail API (instead of compose redirect)
+* Pagination for inbox
+* Search and filtering improvements
+* Multi-user support
+* Performance optimization (caching)
+* UI enhancements (dark mode, animations)
+* Deployment automation
+
+---
+
+## 🤝 Contribution
+
+Contributions are welcome.
+
+Steps:
+
+1. Fork the repository
+2. Create a feature branch
+
+```bash
+git checkout -b feature-name
+```
+
+3. Commit changes
+
+```bash
+git commit -m "Add feature"
+```
+
+4. Push and create Pull Request
+
+---
+
+## 📜 License
+
+This project is open-source and available under the MIT License.
+
+## ⭐ Support
+
+If you like this project, give it a ⭐ on GitHub!
