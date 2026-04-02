@@ -27,3 +27,65 @@ The application uses FastAPI as the backend, PostgreSQL as the database, and int
 * Landing page with typing effect and animations
 * Loading animations for better UX
 * Disabled state for actions on handled emails
+
+## 🏗️ Tech Stack
+
+### Backend
+
+* FastAPI
+* SQLAlchemy
+* PostgreSQL
+* Gmail API (OAuth 2.0)
+* HuggingFace Transformers (for classification)
+* External API (for reply generation)
+
+### Frontend
+
+* HTML
+* CSS
+* JavaScript
+* Jinja2 Templates
+
+### Deployment Target
+
+* Render (Free Tier)
+
+---
+
+## Project Structure
+
+```
+ai-email-assistant/
+│
+├── app/
+│   ├── main.py
+│   ├── database.py
+│   ├── config.py
+│   │
+│   ├── models/
+│   │   ├── email.py
+│   │   └── reply_history.py
+│   │
+│   ├── routers/
+│   │   ├── auth.py
+│   │   ├── email_routes.py
+│   │   └── history_routes.py
+│   │
+│   ├── services/
+│   │   ├── gmail_service.py
+│   │   ├── ai_classifier.py
+│   │   └── ai_reply_generator.py
+│   │
+│   ├── templates/
+│   │   ├── landing.html
+│   │   ├── inbox.html
+│   │   └── history.html
+│   │
+│   └── static/
+│       ├── style.css
+│       └── script.js
+│
+├── .env
+├── requirements.txt
+└── README.md
+```
