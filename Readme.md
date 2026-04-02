@@ -118,7 +118,7 @@ pip install -r requirements.txt
 
 ---
 
-## Environment Variables
+### 4️⃣ Environment Variables
 
 Create a `.env` file in root directory:
 
@@ -134,7 +134,7 @@ GOOGLE_REDIRECT_URI=http://localhost:8000/auth/callback
 
 ---
 
-## Database Setup
+### 5️⃣ Database Setup
 
 1. Create PostgreSQL database:
 
@@ -148,4 +148,76 @@ If needed:
 
 ```sql
 ALTER TABLE emails ADD COLUMN is_handled BOOLEAN DEFAULT FALSE;
+```
+
+## ▶️ Run the Project
+
+```bash
+uvicorn app.main:app --reload
+```
+
+Open in browser:
+
+```
+http://127.0.0.1:8000/
+```
+
+---
+
+## 🧠 Application Workflow
+
+1. User opens landing page
+2. Clicks "Login with Gmail"
+3. OAuth authentication via Google
+4. Redirect to inbox
+5. Backend:
+
+   * Fetches unread emails from Gmail
+   * Stores new emails in PostgreSQL
+   * Classifies emails (if not already classified)
+6. User actions:
+
+   * View email content
+   * Generate AI reply
+   * Generate custom reply
+   * Open Gmail compose with pre-filled content
+7. After sending:
+
+   * Email marked as handled
+   * Removed from inbox
+   * Appears in "Sent" section
+8. Reply history stored and accessible
+
+---
+
+## 📌 Example Output
+
+### Unread Emails API
+
+```
+GET /emails/unread
+```
+
+Response:
+
+```json
+[
+  {
+    "id": "19d334999e4e3664",
+    "sender": "John Doe <john@example.com>",
+    "subject": "Meeting Tomorrow",
+    "snippet": "Can we schedule a meeting...",
+    "category": "Work"
+  }
+]
+```
+
+---
+
+### AI Reply Response
+
+```json
+{
+  "reply": "Dear John,\n\nThank you for your email..."
+}
 ```
