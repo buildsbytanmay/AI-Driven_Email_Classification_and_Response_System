@@ -487,18 +487,22 @@ button:disabled {
     flex: 1;
     padding: 28px;
     overflow-y: auto;
+    background: var(--bg);
 }
 
 .history h3 {
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 20px;
-    color: var(--text);
+    color: #f1f5f9;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .history-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--bg2);
+    border: 1px solid var(--bg3);
     border-radius: var(--radius);
     padding: 16px 20px;
     margin-bottom: 12px;
@@ -507,14 +511,14 @@ button:disabled {
 
 .history-card strong {
     font-size: 13px;
-    color: var(--text2);
+    color: #94a3b8;
 }
 
 .history-card p {
     margin-top: 8px;
     font-size: 13.5px;
     line-height: 1.6;
-    color: var(--text);
+    color: #e2e8f0;
 }
 
 /* ══════════════════════════════════════
@@ -965,7 +969,6 @@ button:disabled {
     .actions input[type="text"] {
         min-width: unset;
         width: 100%;
-        order: 4;
     }
 
     .reply-section { padding: 0 16px 16px; }
