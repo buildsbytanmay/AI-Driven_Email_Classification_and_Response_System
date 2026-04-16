@@ -1,26 +1,116 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>History</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History — AI Email Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
+<!-- ── Mobile Header ── -->
+<div class="mobile-header">
+    <div class="mh-brand">
+        <div class="brand-icon">✉️</div>
+        AI Mail
+    </div>
+    <button class="hamburger-btn" onclick="openDrawer()">☰</button>
+</div>
+
+<!-- ── Drawer Overlay ── -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+
+<!-- ── Drawer Sidebar (mobile) ── -->
+<div class="drawer" id="drawer">
+    <div>
+        <div class="sidebar-brand">
+            <div class="brand-icon">✉️</div>
+            <div>
+                <h2>AI Mail</h2>
+                <span>Smart Assistant</span>
+            </div>
+        </div>
+        <div class="sidebar-nav">
+            <button onclick="goInbox()">📥 Inbox</button>
+            <button class="active">🕘 History</button>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <button onclick="logout()">🚪 Logout</button>
+    </div>
+</div>
+
+<!-- ── Main Container ── -->
 <div class="container">
 
+    <!-- Desktop Sidebar -->
     <div class="sidebar">
-        <h2>AI Mail</h2>
-        <button onclick="goInbox()">Inbox</button>
-        <button onclick="loadHistory()">History</button>
+        <div>
+            <div class="sidebar-brand">
+                <div class="brand-icon">✉️</div>
+                <div>
+                    <h2>AI Mail</h2>
+                    <span>Smart Assistant</span>
+                </div>
+            </div>
+            <div class="sidebar-nav">
+                <button onclick="goInbox()">📥 Inbox</button>
+                <button class="active">🕘 History</button>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <button id="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
     </div>
 
+    <!-- History Content -->
     <div class="history" id="historyList">
-        <h3>Reply History</h3>
+        <h3>🕘 Reply History</h3>
+        <div class="empty-state">
+            <div class="empty-icon">📋</div>
+            <p>Loading history…</p>
+        </div>
     </div>
 
 </div>
 
 <script src="/static/script.js"></script>
+<script>
+function openDrawer() {
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+}
+function closeDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+}
+
+function logout() {
+    document.cookie = "logged_in=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+    window.location.href = "/";
+}
+
+window.onload = function() {
+    fetch("/history")
+        .then(r => r.json())
+        .then(data => {
+            const container = document.getElementById("historyList");
+            container.innerHTML = "<h3>🕘 Reply History</h3>";
+            if (!data.length) {
+                container.innerHTML += `<div class="empty-state"><div class="empty-icon">📋</div><p>No reply history yet.</p></div>`;
+                return;
+            }
+            data.forEach(h => {
+                const card = document.createElement("div");
+                card.className = "history-card";
+                card.innerHTML = `<strong>Email ID: ${h.email_id}</strong><p>${h.reply}</p>`;
+                container.appendChild(card);
+            });
+        });
+};
+</script>
 
 </body>
 </html>

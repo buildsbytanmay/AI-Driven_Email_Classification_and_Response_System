@@ -1,63 +1,198 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <title>AI Email Assistant</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inbox — AI Email Assistant</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
 </head>
-
 <body>
 
-    <div class="container">
+<!-- ── Mobile Header ── -->
+<div class="mobile-header">
+    <div class="mh-brand">
+        <div class="brand-icon">✉️</div>
+        AI Mail
+    </div>
+    <button class="hamburger-btn" onclick="openDrawer()">☰</button>
+</div>
 
-        <!-- Sidebar -->
-        <div class="sidebar">
+<!-- ── Drawer Overlay ── -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
 
+<!-- ── Drawer Sidebar (mobile) ── -->
+<div class="drawer" id="drawer">
+    <div>
+        <div class="sidebar-brand">
+            <div class="brand-icon">✉️</div>
             <div>
-                <h2>📧 AI Mail</h2>
+                <h2>AI Mail</h2>
+                <span>Smart Assistant</span>
+            </div>
+        </div>
+        <div class="sidebar-nav">
+            <button onclick="loadInbox();closeDrawer()" id="dnav-inbox">📥 Inbox</button>
+            <button onclick="filterEmails('Important');closeDrawer()" id="dnav-important">⭐ Important</button>
+            <button onclick="filterEmails('Work');closeDrawer()" id="dnav-work">💼 Work</button>
+            <button onclick="filterEmails('Personal');closeDrawer()" id="dnav-personal">👤 Personal</button>
+            <button onclick="filterEmails('Spam');closeDrawer()" id="dnav-spam">🚫 Spam</button>
+            <button onclick="loadSentEmails();closeDrawer()" id="dnav-sent">📤 Sent</button>
+            <button onclick="goHistory()" id="dnav-history">🕘 History</button>
+        </div>
+    </div>
+    <div class="sidebar-footer">
+        <button onclick="logout()">🚪 Logout</button>
+    </div>
+</div>
 
-                <button onclick="loadInbox()">Inbox</button>
-                <button onclick="filterEmails('Important')">Important</button>
-                <button onclick="filterEmails('Work')">Work</button>
-                <button onclick="filterEmails('Personal')">Personal</button>
-                <button onclick="filterEmails('Spam')">Spam</button>
-                <button onclick="loadSentEmails()">Sent</button>
+<!-- ── Main Container ── -->
+<div class="container">
 
-                <button onclick="goHistory()">History</button>
+    <!-- Desktop Sidebar -->
+    <div class="sidebar">
+        <div>
+            <div class="sidebar-brand">
+                <div class="brand-icon">✉️</div>
+                <div>
+                    <h2>AI Mail</h2>
+                    <span>Smart Assistant</span>
+                </div>
+            </div>
+            <div class="sidebar-nav">
+                <button onclick="loadInbox()" id="nav-inbox">📥 Inbox</button>
+                <button onclick="filterEmails('Important')" id="nav-important">⭐ Important</button>
+                <button onclick="filterEmails('Work')" id="nav-work">💼 Work</button>
+                <button onclick="filterEmails('Personal')" id="nav-personal">👤 Personal</button>
+                <button onclick="filterEmails('Spam')" id="nav-spam">🚫 Spam</button>
+                <button onclick="loadSentEmails()" id="nav-sent">📤 Sent</button>
+                <button onclick="goHistory()" id="nav-history">🕘 History</button>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <button id="logout-btn" onclick="logout()">🚪 Logout</button>
+        </div>
+    </div>
+
+    <!-- Email List -->
+    <div class="email-list" id="emailListPanel">
+        <div class="panel-header">
+            <h3 id="listTitle">📥 Inbox</h3>
+        </div>
+        <div class="email-list-body" id="emailList">
+            <div class="empty-state">
+                <div class="empty-icon">📭</div>
+                <p>Loading emails…</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Email Viewer -->
+    <div class="email-viewer" id="emailViewer">
+
+        <div class="viewer-placeholder" id="viewerPlaceholder">
+            <div class="ph-icon">✉️</div>
+            <p>Select an email from the list to read it here.</p>
+        </div>
+
+        <div id="viewerContent" style="display:none; flex-direction:column; height:100%;">
+            <div class="viewer-header">
+                <button class="back-btn" onclick="closeViewer()">← Back</button>
+                <h3 id="subject">Subject</h3>
+                <div class="sender-row">
+                    <div class="avatar" id="senderAvatar">?</div>
+                    <span id="sender"></span>
+                </div>
             </div>
 
-            <!-- Logout at bottom -->
-            <button id="logout-btn" onclick="logout()">Logout</button>
-
-        </div>
-
-        <!-- Email List -->
-        <div class="email-list" id="emailList">
-            <h3 style="padding:10px;">📥 Inbox</h3>
-        </div>
-
-        <!-- Email Viewer -->
-        <div class="email-viewer">
-            <h3 id="subject">Select an Email</h3>
-            <p id="sender"></p>
-            <div id="body"></div>
+            <div class="viewer-body">
+                <div id="body"></div>
+            </div>
 
             <div class="actions">
-                <button id="generateBtn" onclick="generateReply()">Generate AI Reply</button>
-                <input type="text" id="customInput" placeholder="Custom instruction">
-                <button id="customBtn" onclick="customReply()">Custom Reply</button>
-                <button id="sendBtn" onclick="openGmailCompose()">Send</button>
+                <button class="btn-primary" id="generateBtn" onclick="generateReply()">🤖 AI Reply</button>
+                <button class="btn-secondary" id="customBtn" onclick="customReply()">✏️ Custom</button>
+                <button class="btn-success" id="sendBtn" onclick="openGmailCompose()">📨 Send</button>
+                <input type="text" id="customInput" placeholder="Custom instruction…">
             </div>
 
-            <textarea id="replyBox" placeholder="AI Reply will appear here..."></textarea>
+            <div class="reply-section">
+                <div class="reply-label">AI Generated Reply</div>
+                <textarea id="replyBox" placeholder="AI reply will appear here…"></textarea>
+            </div>
         </div>
 
     </div>
 
-    <div id="loader" class="loader hidden"></div>
+</div>
 
-    <script src="/static/script.js"></script>
+<div id="loader" class="loader hidden"></div>
 
+<script src="/static/script.js"></script>
+<script>
+/* ── Drawer ── */
+function openDrawer() {
+    document.getElementById('drawer').classList.add('open');
+    document.getElementById('drawerOverlay').classList.add('open');
+}
+function closeDrawer() {
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('drawerOverlay').classList.remove('open');
+}
+
+/* ── Mobile viewer close ── */
+function closeViewer() {
+    document.getElementById('emailViewer').classList.remove('mobile-open');
+}
+
+/* ── Active nav (desktop + drawer) ── */
+function setActiveNav(id) {
+    document.querySelectorAll('.sidebar-nav button, .drawer .sidebar-nav button').forEach(b => b.classList.remove('active'));
+    ['nav-' + id, 'dnav-' + id].forEach(nid => {
+        const el = document.getElementById(nid);
+        if (el) el.classList.add('active');
+    });
+}
+
+/* ── Wrap loadInbox ── */
+const _origLoadInbox = loadInbox;
+loadInbox = function() {
+    setActiveNav('inbox');
+    document.getElementById('listTitle').textContent = '📥 Inbox';
+    _origLoadInbox();
+};
+
+/* ── Wrap filterEmails ── */
+const _origFilter = filterEmails;
+filterEmails = function(cat) {
+    const map = { Important:'important', Work:'work', Personal:'personal', Spam:'spam' };
+    setActiveNav(map[cat] || '');
+    document.getElementById('listTitle').textContent = {
+        Important:'⭐ Important', Work:'💼 Work', Personal:'👤 Personal', Spam:'🚫 Spam'
+    }[cat] || cat;
+    _origFilter(cat);
+};
+
+/* ── Wrap loadSentEmails ── */
+const _origSent = loadSentEmails;
+loadSentEmails = function() {
+    setActiveNav('sent');
+    document.getElementById('listTitle').textContent = '📤 Sent';
+    _origSent();
+};
+
+/* ── Wrap openEmail ── */
+const _origOpen = openEmail;
+openEmail = async function(id) {
+    document.getElementById('viewerPlaceholder').style.display = 'none';
+    document.getElementById('viewerContent').style.display = 'flex';
+    /* Slide in on mobile */
+    document.getElementById('emailViewer').classList.add('mobile-open');
+    await _origOpen(id);
+    const s = document.getElementById('sender').innerText;
+    document.getElementById('senderAvatar').textContent = (s[0] || '?').toUpperCase();
+};
+</script>
 </body>
-
 </html>
