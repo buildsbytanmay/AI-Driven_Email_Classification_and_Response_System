@@ -1,60 +1,90 @@
 # 📧 AI-Driven Email Classification & Response System
 
+An AI-powered full-stack web application that integrates with **Gmail** to intelligently manage emails. The system fetches unread emails, classifies them using AI, generates professional replies, and helps users organize handled emails efficiently.
+
+Built with **FastAPI**, **PostgreSQL**, **Gmail API (OAuth 2.0)**, and a modern frontend using **HTML, CSS, JavaScript, and Jinja2 Templates**.
+
+---
+
 ## 🚀 Overview
 
-The **AI-Driven Email Classification & Response System** is a full-stack web application that integrates with Gmail to intelligently manage emails. It allows users to read unread emails, classify them using AI, generate professional replies, and manage handled emails efficiently.
+The application allows users to:
 
-The application uses FastAPI as the backend, PostgreSQL as the database, and integrates with Gmail API using OAuth 2.0. It also includes a modern frontend built with HTML, CSS, JavaScript, and Jinja2 templates.
+- Authenticate securely with Gmail using OAuth 2.0
+- Fetch unread emails directly from Gmail
+- Automatically classify emails using AI
+- Generate professional AI-powered replies
+- Create custom replies from user instructions
+- Open Gmail Compose with pre-filled responses
+- Track handled emails and reply history
+- Manage emails through a clean and responsive interface
 
 ---
 
 ## ✨ Features
 
-* Gmail Authentication using OAuth 2.0
-* Fetch unread emails from Gmail
-* AI-based email classification:
-    * Spam
-    * Work
-    * Personal
-    * Important
-* AI reply generation (via API)
-* Custom reply generation based on user instruction
-* Gmail compose integration (pre-filled email)
-* Inbox filtering by category
-* Sent/Handled emails section
-* Reply history tracking
-* Clean modern UI with animations
-* Landing page with typing effect and animations
-* Loading animations for better UX
-* Disabled state for actions on handled emails
+### 📬 Email Management
+
+- Gmail Authentication using OAuth 2.0
+- Fetch unread emails from Gmail
+- Inbox filtering by category
+- Sent/Handled emails section
+- Reply history tracking
+
+### 🤖 AI Features
+
+- AI-based email classification
+  - Spam
+  - Work
+  - Personal
+  - Important
+- AI reply generation (via API)
+- Custom reply generation based on user instructions
+
+### 🎨 User Experience
+
+- Modern responsive interface
+- Landing page with typing animation
+- Smooth loading animations
+- Gmail compose integration with pre-filled emails
+- Disabled actions for already handled emails
+
+---
 
 ## 🏗️ Tech Stack
 
 ### Backend
 
-* FastAPI
-* SQLAlchemy
-* PostgreSQL
-* Gmail API (OAuth 2.0)
-* HuggingFace Transformers (for classification)
-* External API (for reply generation)
+| Technology | Purpose |
+|------------|---------|
+| FastAPI | REST API development |
+| SQLAlchemy | ORM |
+| PostgreSQL | Database |
+| Gmail API | Gmail integration |
+| OAuth 2.0 | User authentication |
+| HuggingFace Transformers | Email classification |
+| External API | AI reply generation |
 
 ### Frontend
 
-* HTML
-* CSS
-* JavaScript
-* Jinja2 Templates
+| Technology | Purpose |
+|------------|---------|
+| HTML | Page structure |
+| CSS | Styling |
+| JavaScript | Client-side functionality |
+| Jinja2 Templates | Server-side rendering |
 
-### Deployment Target
+### Deployment
 
-* Render (Free Tier)
+| Platform | Usage |
+|----------|-------|
+| Render (Free Tier) | Application deployment |
 
 ---
 
 ## 📁 Project Structure
 
-```
+```text
 ai-email-assistant/
 │
 ├── app/
@@ -90,27 +120,53 @@ ai-email-assistant/
 └── README.md
 ```
 
-## ⚙️ Installation
+---
 
-### 1️⃣ Clone Repository
+# 🚀 Getting Started
+
+## Prerequisites
+
+Before running the project, make sure you have:
+
+- Python 3.10 or later
+- PostgreSQL
+- Gmail API credentials
+- Git
+
+---
+
+## Installation
+
+### 1. Clone the Repository
 
 ```bash
 git clone <your-repo-url>
 cd ai-email-assistant
 ```
 
----
-
-### 2️⃣ Create Virtual Environment
+### 2. Create a Virtual Environment
 
 ```bash
 python -m venv venv
-venv\Scripts\activate   # Windows
+```
+
+Activate the environment:
+
+**Windows**
+
+```bash
+venv\Scripts\activate
+```
+
+**Linux / macOS**
+
+```bash
+source venv/bin/activate
 ```
 
 ---
 
-### 3️⃣ Install Dependencies
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
@@ -118,11 +174,11 @@ pip install -r requirements.txt
 
 ---
 
-### 4️⃣ Environment Variables
+### 4. Configure Environment Variables
 
-Create a `.env` file in root directory:
+Create a `.env` file in the project root.
 
-```
+```env
 DATABASE_URL=postgresql://postgres:your_password@localhost:5432/email_ai_db
 SECRET_KEY=your_secret_key
 APP_ENV=development
@@ -134,71 +190,91 @@ GOOGLE_REDIRECT_URI=http://localhost:8000/auth/callback
 
 ---
 
-### 5️⃣ Database Setup
+### 5. Database Setup
 
-1. Create PostgreSQL database:
+Create the PostgreSQL database.
 
 ```sql
 CREATE DATABASE email_ai_db;
 ```
 
-2. Tables will be auto-created via SQLAlchemy (if configured).
+Database tables will be created automatically by SQLAlchemy (if configured).
 
-If needed:
+If required, run:
 
 ```sql
-ALTER TABLE emails ADD COLUMN is_handled BOOLEAN DEFAULT FALSE;
+ALTER TABLE emails
+ADD COLUMN is_handled BOOLEAN DEFAULT FALSE;
 ```
 
-## ▶️ Run the Project
+---
+
+## ▶️ Running the Application
+
+Start the development server.
 
 ```bash
 uvicorn app.main:app --reload
 ```
 
-Open in browser:
+Open your browser and visit:
 
-```
+```text
 http://127.0.0.1:8000/
 ```
 
 ---
 
-## 🧠 Application Workflow
+# 🧠 Application Workflow
 
-1. User opens landing page
-2. Clicks "Login with Gmail"
-3. OAuth authentication via Google
-4. Redirect to inbox
-5. Backend:
-
-   * Fetches unread emails from Gmail
-   * Stores new emails in PostgreSQL
-   * Classifies emails (if not already classified)
-6. User actions:
-
-   * View email content
-   * Generate AI reply
-   * Generate custom reply
-   * Open Gmail compose with pre-filled content
-7. After sending:
-
-   * Email marked as handled
-   * Removed from inbox
-   * Appears in "Sent" section
-8. Reply history stored and accessible
+```text
+Landing Page
+      │
+      ▼
+Login with Gmail
+      │
+      ▼
+Google OAuth Authentication
+      │
+      ▼
+Inbox
+      │
+      ▼
+Fetch Unread Emails
+      │
+      ▼
+Store in PostgreSQL
+      │
+      ▼
+AI Classification
+      │
+      ▼
+User Actions
+ ├── View Email
+ ├── Generate AI Reply
+ ├── Generate Custom Reply
+ └── Open Gmail Compose
+      │
+      ▼
+Mark as Handled
+      │
+      ▼
+Reply History
+```
 
 ---
 
-## 📌 Example Output
+## 📌 API Example
 
-### Unread Emails API
+### Fetch Unread Emails
 
-```
+**Request**
+
+```http
 GET /emails/unread
 ```
 
-Response:
+**Response**
 
 ```json
 [
@@ -214,7 +290,9 @@ Response:
 
 ---
 
-### AI Reply Response
+### AI Reply Generation
+
+**Response**
 
 ```json
 {
@@ -222,46 +300,58 @@ Response:
 }
 ```
 
-## 🔮 Future Improvements
+---
 
-* Background job processing (Celery)
-* Real email sending via Gmail API (instead of compose redirect)
-* Pagination for inbox
-* Search and filtering improvements
-* Multi-user support
-* Performance optimization (caching)
-* UI enhancements (dark mode, animations)
-* Deployment automation
+# 🔮 Future Improvements
+
+- Background job processing using Celery
+- Direct email sending through Gmail API
+- Inbox pagination
+- Improved search and filtering
+- Multi-user support
+- Performance optimization through caching
+- Additional UI improvements
+- Dark mode
+- Deployment automation
 
 ---
 
-## 🤝 Contribution
+# 🤝 Contributing
 
 Contributions are welcome.
 
-Steps:
+### Fork the Repository
 
-1. Fork the repository
-2. Create a feature branch
+Create your own copy of the project.
+
+### Create a Feature Branch
 
 ```bash
 git checkout -b feature-name
 ```
 
-3. Commit changes
+### Commit Your Changes
 
 ```bash
 git commit -m "Add feature"
 ```
 
-4. Push and create Pull Request
+### Push the Branch
+
+```bash
+git push origin feature-name
+```
+
+Finally, open a Pull Request.
 
 ---
 
-## 📜 License
+# 📜 License
 
-This project is open-source and available under the MIT License.
+This project is open-source and available under the **MIT License**.
 
-## ⭐ Support
+---
 
-If you like this project, give it a ⭐ on GitHub!
+# ⭐ Support
+
+If you found this project helpful, consider giving it a **⭐ Star** on GitHub!
